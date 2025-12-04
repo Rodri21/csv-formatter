@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesador de Excel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Procesador de CSV</h1>
+        <div class="upload-section">
+            <div class="upload-group">
+                <label for="dataFile">Archivo de Datos (CSV):</label>
+                <input type="file" id="dataFile" accept=".csv" required>
+                <span class="file-info" id="dataFileInfo"></span>
+            </div>
+            
+            <div class="template-info">
+                <p><strong>Template:</strong> Se usará automáticamente el archivo <code>trailer-template.csv</code> de la carpeta assets</p>
+            </div>
+        </div>
+
+        <div class="options-section">
+            <h3>Opciones de Conversión</h3>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="convertFtToIn" checked>
+                    Convertir pies (ft) a pulgadas (in)
+                </label>
+            </div>
+            
+            <h4>Modo de Mapeo de Columnas</h4>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" id="useColumns" name="mappingMode" value="columns" checked>
+                    Usar letras de columnas (A, B, C...)
+                </label>
+                <label>
+                    <input type="radio" id="useHeaders" name="mappingMode" value="headers">
+                    Usar headers (primera fila como referencia)
+                </label>
+            </div>
+        </div>
+
+        <div class="process-section">
+            <button id="processBtn" class="process-btn" disabled>Procesar Archivos</button>
+        </div>
+
+        <div class="status-section">
+            <div id="status" class="status"></div>
+            <div id="progress" class="progress" style="display: none;">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <button id="downloadBtn" class="download-btn">Descargar Excel Procesado</button>
+        </div>
+    </div>
+
+    <!-- Include XLSX library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
