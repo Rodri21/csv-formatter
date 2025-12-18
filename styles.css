@@ -219,6 +219,319 @@ h4 {
     background-color: #218838;
 }
 
+/* Manual de Usuario */
+.user-manual-section {
+    margin-top: 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.manual-header {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+.manual-header:hover {
+    background-color: #e9ecef;
+}
+
+.manual-header h3 {
+    margin: 0;
+    color: #495057;
+    font-size: 1.2em;
+}
+
+.toggle-icon {
+    font-size: 1.2em;
+    color: #6c757d;
+    transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotated {
+    transform: rotate(180deg);
+}
+
+.manual-content {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.manual-content.open {
+    max-height: 5000px;
+    padding: 20px;
+}
+
+.manual-step {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
+.step-number {
+    background-color: #007bff;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+.step-content p {
+    margin: 0 0 10px 0;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+.option-explanation {
+    background-color: #f1f8ff;
+    border-left: 4px solid #007bff;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.option-explanation h5 {
+    margin: 0 0 8px 0;
+    color: #0056b3;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.option-explanation p {
+    margin: 5px 0;
+    color: #495057;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.step-visual {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.visual-file-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.visual-btn,
+.visual-process-btn,
+.visual-download-btn {
+    padding: 8px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    color: #495057;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.visual-process-btn {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+.visual-download-btn {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+.visual-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.visual-checkbox,
+.visual-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #495057;
+    font-size: 0.9em;
+}
+
+.visual-radio-group {
+    margin-top: 10px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.manual-tips {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.manual-tips h4 {
+    margin: 0 0 10px 0;
+    color: #856404;
+}
+
+.manual-tips ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.manual-tips li {
+    color: #856404;
+    margin-bottom: 5px;
+}
+
+.manual-tips code {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    color: #495057;
+}
+
+/* Estilos para la sección de transformaciones */
+.transformation-intro {
+    background-color: #f0f8ff;
+    border: 1px solid #b8d4f0;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.transformation-intro p {
+    margin-bottom: 10px;
+}
+
+.transformation-section {
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.transformation-section h4 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.transformation-details p {
+    margin-bottom: 10px;
+}
+
+.transformation-details ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.transformation-details li {
+    margin-bottom: 5px;
+}
+
+.example-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #007bff;
+    border-radius: 0 4px 4px 0;
+    padding: 15px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.example-box p {
+    margin-bottom: 8px;
+}
+
+.mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.mapping-table th,
+.mapping-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+}
+
+.mapping-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+.mapping-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.transformation-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-left: 4px solid #f39c12;
+    border-radius: 0 5px 5px 0;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.transformation-warning h4 {
+    color: #856404;
+    margin-bottom: 15px;
+}
+
+.transformation-warning p {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.transformation-warning ul {
+    color: #856404;
+    padding-left: 20px;
+}
+
+.transformation-warning li {
+    margin-bottom: 5px;
+}
+
 @media (max-width: 600px) {
     .container {
         margin-top: 20px;
@@ -227,5 +540,42 @@ h4 {
     
     h1 {
         font-size: 2em;
+    }
+
+    .manual-step {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .step-number {
+        align-self: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .visual-file-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .visual-options {
+        font-size: 0.85em;
+    }
+    
+    .transformation-section {
+        padding: 15px;
+    }
+    
+    .mapping-table {
+        font-size: 0.85em;
+    }
+    
+    .mapping-table th,
+    .mapping-table td {
+        padding: 8px;
+    }
+    
+    .example-box {
+        font-size: 0.85em;
+        padding: 10px;
     }
 }

@@ -705,3 +705,35 @@ class ExcelProcessor {
 document.addEventListener('DOMContentLoaded', () => {
     new ExcelProcessor();
 });
+
+// Función para toggle del manual de usuario
+function toggleUserManual() {
+    const manualContent = document.getElementById('manualContent');
+    const toggleIcon = document.getElementById('manualToggleIcon');
+    
+    if (manualContent.classList.contains('open')) {
+        manualContent.classList.remove('open');
+        toggleIcon.classList.remove('rotated');
+        toggleIcon.textContent = '▼';
+    } else {
+        manualContent.classList.add('open');
+        toggleIcon.classList.add('rotated');
+        toggleIcon.textContent = '▲';
+    }
+}
+
+// Función para toggle de las transformaciones del sistema
+function toggleTransformations() {
+    const transformationsContent = document.getElementById('transformationsContent');
+    const toggleIcon = document.getElementById('transformationsToggleIcon');
+    
+    if (transformationsContent.classList.contains('open')) {
+        transformationsContent.classList.remove('open');
+        toggleIcon.classList.remove('rotated');
+        toggleIcon.textContent = '▼';
+    } else {
+        transformationsContent.classList.add('open');
+        toggleIcon.classList.add('rotated');
+        toggleIcon.textContent = '▲';
+    }
+}

@@ -57,6 +57,243 @@
         <div class="download-section" id="downloadSection" style="display: none;">
             <button id="downloadBtn" class="download-btn">Descargar Excel Procesado</button>
         </div>
+
+        <!-- Manual de Usuario -->
+        <div class="user-manual-section">
+            <div class="manual-header" onclick="toggleUserManual()">
+                <h3>📖 Manual de Usuario</h3>
+                <span class="toggle-icon" id="manualToggleIcon">▼</span>
+            </div>
+            <div class="manual-content" id="manualContent">
+                <div class="manual-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>📁 Selecciona tu archivo CSV</h4>
+                        <p>Haz clic en "Elegir archivo" y selecciona el archivo CSV con los datos que quieres procesar.</p>
+                        <div class="step-visual">
+                            <div class="visual-file-input">
+                                <span>📄 Archivo de Datos (CSV): </span>
+                                <button class="visual-btn">Elegir archivo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>⚙️ Configura las opciones</h4>
+                        <p>Selecciona las opciones de conversión según tus necesidades:</p>
+                        
+                        <div class="option-explanation">
+                            <h5>🔧 Conversión de Unidades:</h5>
+                            <p><strong>Convertir pies (ft) a pulgadas (in):</strong> Si tu archivo contiene medidas en pies (como "6.5 ft"), el sistema las convertirá automáticamente a pulgadas (como "78 in"). Útil cuando tu archivo de datos usa pies pero necesitas el resultado en pulgadas.</p>
+                        </div>
+
+                        <div class="option-explanation">
+                            <h5>📊 Modo de Mapeo de Columnas:</h5>
+                            <p><strong>Usar letras de columnas (A, B, C...):</strong> El sistema buscará los datos en posiciones fijas. Por ejemplo, siempre tomará el dato de la columna A para el número de stock, sin importar qué dice el encabezado.</p>
+                            <p><strong>Usar headers (primera fila como referencia):</strong> El sistema leerá los nombres de las columnas en la primera fila y buscará por nombre. Por ejemplo, buscará una columna que se llame "stock #" sin importar en qué posición esté.</p>
+                        </div>
+                        
+                        <div class="step-visual">
+                            <div class="visual-options">
+                                <label class="visual-checkbox">
+                                    <input type="checkbox" checked disabled>
+                                    <span>✅ Convertir pies (ft) a pulgadas (in)</span>
+                                </label>
+                                <div class="visual-radio-group">
+                                    <label class="visual-radio">
+                                        <input type="radio" name="demo" checked disabled>
+                                        <span>🔤 Usar letras de columnas (A, B, C...)</span>
+                                    </label>
+                                    <label class="visual-radio">
+                                        <input type="radio" name="demo" disabled>
+                                        <span>📋 Usar headers (primera fila como referencia)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>🔄 Procesa los archivos</h4>
+                        <p>Una vez que hayas seleccionado tu archivo, el botón "Procesar Archivos" se activará. Haz clic para iniciar el procesamiento.</p>
+                        <div class="step-visual">
+                            <button class="visual-process-btn">🔄 Procesar Archivos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>⬇️ Descarga el resultado</h4>
+                        <p>Cuando el procesamiento termine, aparecerá un botón para descargar tu archivo Excel procesado.</p>
+                        <div class="step-visual">
+                            <button class="visual-download-btn">📥 Descargar Excel Procesado</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-tips">
+                    <h4>💡 Consejos útiles:</h4>
+                    <ul>
+                        <li><strong>Template automático:</strong> El sistema usa automáticamente el template <code>trailer-template.csv</code></li>
+                        <li><strong>Conversión de unidades:</strong> Solo se aplica a campos de medidas (largo, ancho, alto). Si no tienes medidas en pies, puedes desactivar esta opción</li>
+                        <li><strong>Modo columnas vs headers:</strong> 
+                            <ul>
+                                <li>Usa <em>columnas</em> si tu archivo siempre tiene los datos en las mismas posiciones</li>
+                                <li>Usa <em>headers</em> si las columnas pueden cambiar de orden pero tienen nombres consistentes</li>
+                            </ul>
+                        </li>
+                        <li><strong>Resultado:</strong> El archivo final será un Excel (.xlsx) listo para usar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transformaciones del Sistema -->
+        <div class="user-manual-section">
+            <div class="manual-header" onclick="toggleTransformations()">
+                <h3>🔧 Transformaciones del Sistema</h3>
+                <span class="toggle-icon" id="transformationsToggleIcon">▼</span>
+            </div>
+            <div class="manual-content" id="transformationsContent">
+                
+                <div class="transformation-intro">
+                    <p><strong>Esta sección explica exactamente qué modificaciones aplicará el sistema al archivo CSV</strong></p>
+                    <p>Revisa estas transformaciones para entender cómo se procesará tu archivo CSV:</p>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>📏 Conversión de Medidas (Pies a Pulgadas)</h4>
+                    <div class="transformation-details">
+                        <p><strong>¿Cuándo se aplica?</strong> Solo cuando tienes activada la opción "Convertir pies (ft) a pulgadas (in)"</p>
+                        <p><strong>¿Qué campos afecta?</strong> Únicamente las columnas de dimensiones: <em>Length, Width, Height</em> (Largo, Ancho, Alto)</p>
+                        <p><strong>¿Qué busca?</strong> Valores que contengan:</p>
+                        <ul>
+                            <li><code>"20ft"</code> o <code>"20 ft"</code> → Se convierte en <code>"240 in"</code></li>
+                            <li><code>"8.5 ft"</code> → Se convierte en <code>"102 in"</code></li>
+                            <li><code>"6'"</code> → Se convierte en <code>"72 in"</code></li>
+                            <li><code>"15"</code> (sin unidad) → Se asume que son pies y se convierte en <code>"180 in"</code></li>
+                        </ul>
+                        <p><strong>¿Qué NO se toca?</strong> Valores que ya contengan "in" (pulgadas) se mantienen sin cambios</p>
+                    </div>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>🖼️ Procesamiento de Fotos</h4>
+                    <div class="transformation-details">
+                        <p><strong>¿Qué hace?</strong> Toma una celda con múltiples URLs de fotos y las separa en columnas individuales</p>
+                        <p><strong>Ejemplo de transformación:</strong></p>
+                        <div class="example-box">
+                            <p><strong>Antes:</strong><br>
+                            Columna "Images": <code>foto1.jpg, foto2.jpg, foto3.jpg</code></p>
+                            <p><strong>Después:</strong><br>
+                            Photo 1: <code>foto1.jpg</code><br>
+                            Photo 2: <code>foto2.jpg</code><br>
+                            Photo 3: <code>foto3.jpg</code></p>
+                        </div>
+                        <p><strong>¿Cómo funciona?</strong> Busca comas para separar las URLs y elimina espacios extra</p>
+                        <p><strong>Columnas creadas:</strong> Se crean automáticamente tantas columnas "Photo X" como fotos tengas</p>
+                    </div>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>🧹 Limpieza de Descripciones</h4>
+                    <div class="transformation-details">
+                        <p><strong>¿Qué campos afecta?</strong> Solo la columna "Description"</p>
+                        <p><strong>¿Qué elimina?</strong> Únicamente los caracteres <code>#</code> y <code>*</code></p>
+                        <p><strong>Ejemplo:</strong></p>
+                        <div class="example-box">
+                            <p><strong>Antes:</strong> <code>Trailer #123 *Nuevo* con características especiales</code></p>
+                            <p><strong>Después:</strong> <code>Trailer 123 Nuevo con características especiales</code></p>
+                        </div>
+                        <p><strong>¿Qué NO se toca?</strong> Todo lo demás se mantiene intacto (espacios, otros símbolos, mayúsculas/minúsculas)</p>
+                    </div>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>⚖️ Eliminación de Valores Cero en Pesos</h4>
+                    <div class="transformation-details">
+                        <p><strong>¿Qué campos afecta?</strong> Solo las columnas de peso: <em>GVWR</em> y <em>Payload Capacity</em></p>
+                        <p><strong>¿Qué hace?</strong> Si encuentra un valor de 0 (cero), lo deja completamente vacío</p>
+                        <p><strong>¿Por qué?</strong> Los ceros en pesos suelen ser datos faltantes, no pesos reales de 0 libras</p>
+                        <p><strong>Ejemplo:</strong></p>
+                        <div class="example-box">
+                            <p><strong>Antes:</strong> <code>0</code>, <code>0.0</code>, <code>0 lbs</code></p>
+                            <p><strong>Después:</strong> <em>(celda vacía)</em></p>
+                        </div>
+                        <p><strong>¿Qué NO se toca?</strong> Valores mayores a cero se mantienen tal como están</p>
+                    </div>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>📊 Mapeo de Columnas</h4>
+                    <div class="transformation-details">
+                        <p><strong>¿Qué hace?</strong> Reorganiza tu información según el template estándar</p>
+                        <p><strong>Mapeo principal:</strong></p>
+                        <table class="mapping-table">
+                            <thead>
+                                <tr>
+                                    <th>Tu archivo puede tener</th>
+                                    <th>Se convierte en</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Stock #, Stock Number</td><td>Unique ID + Stock Number</td></tr>
+                                <tr><td>Category</td><td>Class</td></tr>
+                                <tr><td>Manufacturer</td><td>Make</td></tr>
+                                <tr><td>Model</td><td>Model</td></tr>
+                                <tr><td>Year</td><td>Year</td></tr>
+                                <tr><td>VIN#</td><td>VIN/Serial Number</td></tr>
+                                <tr><td>Condition</td><td>New/Used</td></tr>
+                                <tr><td>Description</td><td>Description (limpia)</td></tr>
+                                <tr><td>Color</td><td>Primary Color</td></tr>
+                                <tr><td>Price</td><td>Price ($)</td></tr>
+                                <tr><td>Length/Width/Height</td><td>Length/Width/Height (convertidas)</td></tr>
+                                <tr><td>GVWR (lbs)</td><td>GVWR (sin ceros)</td></tr>
+                                <tr><td>Payload Capacity (lbs)</td><td>Payload Capacity (sin ceros)</td></tr>
+                                <tr><td>Images</td><td>Photo 1, Photo 2, Photo 3...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="transformation-section">
+                    <h4>🔄 Datos que NO se modifican</h4>
+                    <div class="transformation-details">
+                        <p><strong>El sistema respeta completamente:</strong></p>
+                        <ul>
+                            <li><strong>Mayúsculas y minúsculas</strong> (excepto en descripciones donde solo quita # y *)</li>
+                            <li><strong>Espacios y formato de texto</strong></li>
+                            <li><strong>Números que no sean precios o medidas</strong></li>
+                            <li><strong>Fechas y otros formatos especiales</strong></li>
+                            <li><strong>Celdas vacías</strong> (se mantienen vacías)</li>
+                            <li><strong>Datos que no coincidan con las columnas mapeadas</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="transformation-warning">
+                    <h4>⚠️ Importante</h4>
+                    <p><strong>Estas transformaciones son automáticas y se aplican en el momento del procesamiento.</strong></p>
+                    <p>Si alguna transformación no es adecuada para tus datos, puedes:</p>
+                    <ul>
+                        <li>Desactivar la conversión de pies a pulgadas</li>
+                        <li>Ajustar tu archivo CSV antes de procesarlo</li>
+                        <li>Editar manualmente el archivo final</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <br><br><br>
     </div>
 
     <!-- Include XLSX library -->
