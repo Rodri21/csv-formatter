@@ -30,6 +30,7 @@
                 </label>
             </div>
             
+            <!-- Modo de Mapeo de Columnas - OCULTO
             <h4>Modo de Mapeo de Columnas</h4>
             <div class="radio-group">
                 <label>
@@ -41,6 +42,13 @@
                     Usar headers (primera fila como referencia)
                 </label>
             </div>
+            -->
+        </div>
+
+        <!-- Elementos ocultos pero necesarios para JavaScript -->
+        <div style="display: none;">
+            <input type="radio" id="useColumns" name="mappingMode" value="columns" checked>
+            <input type="radio" id="useHeaders" name="mappingMode" value="headers">
         </div>
 
         <div class="process-section">
@@ -55,7 +63,7 @@
         </div>
 
         <div class="download-section" id="downloadSection" style="display: none;">
-            <button id="downloadBtn" class="download-btn">Descargar Excel Procesado</button>
+            <button id="downloadBtn" class="download-btn">Descargar CSV Procesado</button>
         </div>
 
         <!-- Manual de Usuario -->
@@ -90,11 +98,13 @@
                             <p><strong>Convertir pies (ft) a pulgadas (in):</strong> Si tu archivo contiene medidas en pies (como "6.5 ft"), el sistema las convertirá automáticamente a pulgadas (como "78 in"). Útil cuando tu archivo de datos usa pies pero necesitas el resultado en pulgadas.</p>
                         </div>
 
+                        <!-- Modo de Mapeo de Columnas - OCULTO
                         <div class="option-explanation">
                             <h5>📊 Modo de Mapeo de Columnas:</h5>
                             <p><strong>Usar letras de columnas (A, B, C...):</strong> El sistema buscará los datos en posiciones fijas. Por ejemplo, siempre tomará el dato de la columna A para el número de stock, sin importar qué dice el encabezado.</p>
                             <p><strong>Usar headers (primera fila como referencia):</strong> El sistema leerá los nombres de las columnas en la primera fila y buscará por nombre. Por ejemplo, buscará una columna que se llame "stock #" sin importar en qué posición esté.</p>
                         </div>
+                        -->
                         
                         <div class="step-visual">
                             <div class="visual-options">
@@ -102,6 +112,7 @@
                                     <input type="checkbox" checked disabled>
                                     <span>✅ Convertir pies (ft) a pulgadas (in)</span>
                                 </label>
+                                <!-- Opciones de mapeo visual - OCULTO
                                 <div class="visual-radio-group">
                                     <label class="visual-radio">
                                         <input type="radio" name="demo" checked disabled>
@@ -112,6 +123,7 @@
                                         <span>📋 Usar headers (primera fila como referencia)</span>
                                     </label>
                                 </div>
+                                -->
                             </div>
                         </div>
                     </div>
@@ -132,9 +144,9 @@
                     <div class="step-number">4</div>
                     <div class="step-content">
                         <h4>⬇️ Descarga el resultado</h4>
-                        <p>Cuando el procesamiento termine, aparecerá un botón para descargar tu archivo Excel procesado.</p>
+                        <p>Cuando el procesamiento termine, aparecerá un botón para descargar tu archivo CSV procesado.</p>
                         <div class="step-visual">
-                            <button class="visual-download-btn">📥 Descargar Excel Procesado</button>
+                            <button class="visual-download-btn">📥 Descargar CSV Procesado</button>
                         </div>
                     </div>
                 </div>
@@ -144,13 +156,15 @@
                     <ul>
                         <li><strong>Template automático:</strong> El sistema usa automáticamente el template <code>trailer-template.csv</code></li>
                         <li><strong>Conversión de unidades:</strong> Solo se aplica a campos de medidas (largo, ancho, alto). Si no tienes medidas en pies, puedes desactivar esta opción</li>
+                        <!-- Modo columnas vs headers - OCULTO
                         <li><strong>Modo columnas vs headers:</strong> 
                             <ul>
                                 <li>Usa <em>columnas</em> si tu archivo siempre tiene los datos en las mismas posiciones</li>
                                 <li>Usa <em>headers</em> si las columnas pueden cambiar de orden pero tienen nombres consistentes</li>
                             </ul>
                         </li>
-                        <li><strong>Resultado:</strong> El archivo final será un Excel (.xlsx) listo para usar</li>
+                        -->
+                        <li><strong>Resultado:</strong> El archivo final será un CSV (.csv) listo para usar</li>
                     </ul>
                 </div>
             </div>

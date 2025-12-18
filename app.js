@@ -3,6 +3,7 @@ class ExcelProcessor {
         this.dataFile = null;
         this.templateData = null;
         this.processedWorkbook = null;
+        this.processedData = null;
         
         // Mapeo de columnas Input -> Output
         this.columnMapping = {
@@ -68,9 +69,17 @@ class ExcelProcessor {
                 throw new Error(`No se pudo cargar el template: ${response.statusText}`);
             }
             const csvText = await response.text();
-            const workbook = XLSX.read(csvText, { type: 'string' });
+            const workbook = XLSX.read(csvText, { 
+                type: 'string',
+                raw: false,  // No convertir automáticamente a números
+                codepage: 65001  // UTF-8
+            });
             const sheetName = workbook.SheetNames[0];
-            this.templateData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+            this.templateData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { 
+                header: 1,
+                raw: false,  // No convertir automáticamente a números
+                defval: ''   // Valor por defecto para celdas vacías
+            });
             this.showStatus('✓ Template cargado correctamente', 'success');
             this.updateProcessButtonState();
         } catch (error) {
@@ -129,8 +138,12 @@ class ExcelProcessor {
             reader.onload = function(e) {
                 try {
                     const text = e.target.result;
-                    // Convertir CSV a workbook usando XLSX
-                    const workbook = XLSX.read(text, { type: 'string' });
+                    // Convertir CSV a workbook usando XLSX con preservación de texto
+                    const workbook = XLSX.read(text, { 
+                        type: 'string',
+                        raw: false,  // No convertir automáticamente a números
+                        codepage: 65001  // UTF-8
+                    });
                     resolve(workbook);
                 } catch (error) {
                     reject(new Error(`Error leyendo archivo CSV: ${error.message}`));
@@ -146,8 +159,12 @@ class ExcelProcessor {
         const dataSheetName = dataWorkbook.SheetNames[0];
         const dataSheet = dataWorkbook.Sheets[dataSheetName];
         
-        // Convertir a JSON para facilitar el procesamiento
-        const rawData = XLSX.utils.sheet_to_json(dataSheet, { header: 1 });
+        // Convertir a JSON para facilitar el procesamiento, preservando el formato de texto
+        const rawData = XLSX.utils.sheet_to_json(dataSheet, { 
+            header: 1,
+            raw: false,  // No convertir automáticamente a números
+            defval: ''   // Valor por defecto para celdas vacías
+        });
         
         // Determinar el modo de mapeo
         const useHeaders = document.getElementById('useHeaders').checked;
@@ -327,6 +344,12 @@ class ExcelProcessor {
         
         let processedValue = value;
         
+        // Manejar columnas de stock específicamente para preservar formato
+        if (this.isStockColumn(columnName)) {
+            // Asegurar que los números de stock se mantengan como texto
+            return this.preserveStockFormat(processedValue);
+        }
+        
         // Convertir dimensiones (length, width, height) de pies a pulgadas si está habilitado
         if (convertFtToIn && this.isDimensionColumn(columnName)) {
             processedValue = this.convertDimensionToInches(processedValue);
@@ -364,6 +387,24 @@ class ExcelProcessor {
         );
     }
     
+    isStockColumn(columnName) {
+        const stockColumns = ['Unique ID', 'Stock Number', 'stock #', 'stock number', 'unique id'];
+        return stockColumns.some(col => 
+            col.toLowerCase() === columnName.toLowerCase().trim()
+        );
+    }
+    
+    preserveStockFormat(value) {
+        if (value === null || value === undefined || value === '') return '';
+        
+        // Convertir a string y mantener el formato exacto
+        let stockValue = value.toString().trim();
+        
+        // No hacer ninguna transformación numérica, mantener tal como está
+        // Esto preserva los ceros iniciales como "0001", "0002", etc.
+        return stockValue;
+    }
+
     cleanDescription(value) {
         if (value === null || value === undefined || value === '') return '';
         
@@ -546,9 +587,9 @@ class ExcelProcessor {
         const numericValue = this.extractNumericValue(value);
         if (isNaN(numericValue)) return value;
         
-        // Para CSV, devolver el valor numérico sin formato
-        // El formato se aplicará al crear el Excel
-        return numericValue;
+        // Para CSV, mantener el valor original formateado como cadena
+        // Esto preserva el formato de moneda si ya está presente
+        return value.toString();
     }
     
     extractNumericValue(value) {
@@ -594,53 +635,44 @@ class ExcelProcessor {
     }
 
     createProcessedWorkbook(processedData) {
-        // Crear un nuevo workbook
+        // Guardar los datos procesados para generar CSV
+        this.processedData = processedData;
+        
+        // Para compatibilidad con el resto del código, crear un workbook simple
         const newWorkbook = XLSX.utils.book_new();
-        
-        // Crear una hoja con los datos procesados
         const worksheet = XLSX.utils.aoa_to_sheet(processedData);
-        
-        // Aplicar formato de moneda a la columna de precios
-        this.applyCurrencyFormatting(worksheet, processedData);
-        
-        // Agregar la hoja al workbook
         XLSX.utils.book_append_sheet(newWorkbook, worksheet, 'Datos Procesados');
         
         return newWorkbook;
     }
     
-    applyCurrencyFormatting(worksheet, data) {
-        if (data.length === 0) return;
+    convertToCSV(data) {
+        if (!data || data.length === 0) return '';
         
-        const headers = data[0];
-        
-        // Buscar la columna de precio
-        const priceColumnIndex = headers.findIndex(header => 
-            this.isPriceColumn(header)
-        );
-        
-        if (priceColumnIndex === -1) return;
-        
-        // Aplicar formato de moneda desde la segunda fila
-        for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
-            const cellAddress = XLSX.utils.encode_cell({
-                r: rowIndex,
-                c: priceColumnIndex
-            });
+        // Función para escapar valores CSV
+        const escapeCSVValue = (value) => {
+            if (value === null || value === undefined) return '';
             
-            if (worksheet[cellAddress]) {
-                // Aplicar formato de moneda
-                worksheet[cellAddress].z = '"$"#,##0.00';
-                
-                // Asegurar que el valor sea numérico para el formato
-                const cellValue = data[rowIndex][priceColumnIndex];
-                const numericValue = this.extractNumericValue(cellValue);
-                if (!isNaN(numericValue)) {
-                    worksheet[cellAddress].v = numericValue;
-                    worksheet[cellAddress].t = 'n'; // tipo numérico
-                }
+            let stringValue = value.toString();
+            
+            // Si contiene comas, comillas dobles, o saltos de línea, necesita ser escapado
+            if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n') || stringValue.includes('\r')) {
+                // Escapar comillas dobles duplicándolas
+                stringValue = stringValue.replace(/"/g, '""');
+                // Envolver en comillas dobles
+                stringValue = `"${stringValue}"`;
             }
-        }
+            
+            return stringValue;
+        };
+        
+        // Convertir cada fila a CSV
+        const csvRows = data.map(row => {
+            return row.map(cell => escapeCSVValue(cell)).join(',');
+        });
+        
+        // Unir todas las filas con saltos de línea
+        return csvRows.join('\n');
     }
 
     showStatus(message, type = 'info') {
@@ -651,30 +683,30 @@ class ExcelProcessor {
     }
 
     downloadProcessedFile() {
-        if (!this.processedWorkbook) {
+        if (!this.processedData) {
             this.showStatus('❌ No hay archivo procesado para descargar', 'error');
             return;
         }
 
         try {
-            const wbout = XLSX.write(this.processedWorkbook, {
-                bookType: 'xlsx',
-                type: 'array'
-            });
-
-            const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            // Convertir los datos a formato CSV
+            const csvContent = this.convertToCSV(this.processedData);
+            
+            // Crear blob con el contenido CSV
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             
+            // Crear enlace de descarga
             const link = document.createElement('a');
             link.href = url;
-            link.download = `processed_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            link.download = `processed_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             
             URL.revokeObjectURL(url);
             
-            this.showStatus('✓ Archivo Excel descargado exitosamente con formato de moneda', 'success');
+            this.showStatus('✓ Archivo CSV descargado exitosamente', 'success');
             
         } catch (error) {
             console.error('Error downloading file:', error);
